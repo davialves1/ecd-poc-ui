@@ -2,6 +2,7 @@ import {useContext, useEffect} from "react";
 import Header from "../shared/header";
 import DataContext from "../shared/data-context";
 import {Link} from "react-router-dom";
+import ProgressBar from "../shared/progress-bar";
 
 const MetaData = () => {
 
@@ -30,6 +31,7 @@ const MetaData = () => {
   return (
       <>
         <Header />
+        <ProgressBar progress={35} />
         <div className="container-fluid mb-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">

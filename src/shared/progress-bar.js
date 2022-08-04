@@ -1,4 +1,10 @@
+import {useState} from "react";
+
 const ProgressBar = ({progress}) => {
+
+  const [progressAnimated, setProgressAnimated] = useState(0);
+
+  setTimeout(() => setProgressAnimated(progress), 200);
 
   return (
       <>
@@ -7,9 +13,9 @@ const ProgressBar = ({progress}) => {
             <div className="col-10 mx-auto">
               <div className="progress">
                 <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                     aria-label="Example with label" style={{width: `${progress}%`}}
-                     aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">
-                  {`${progress}%`}
+                     aria-label="Example with label" style={{width: `${progressAnimated}%`}}
+                     aria-valuenow={progressAnimated} aria-valuemin="0" aria-valuemax="100">
+                  {`${progressAnimated}%`}
                 </div>
               </div>
             </div>

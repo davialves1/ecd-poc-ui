@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Header from "../shared/header";
 import {Link} from "react-router-dom";
+import ProgressBar from "../shared/progress-bar";
 
 const ReadFile = () => {
 
@@ -53,6 +54,7 @@ const ReadFile = () => {
     return (
         <>
           <Header />
+          <ProgressBar progress={75} />
           <div className="container-fluid">
           <div className="row">
             <div className="col-10 mx-auto">

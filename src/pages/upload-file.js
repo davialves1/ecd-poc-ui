@@ -3,6 +3,7 @@ import {useState, useEffect, useContext} from "react";
 import axios from "axios";
 import DataContext from "../shared/data-context";
 import {useNavigate} from "react-router-dom";
+import ProgressBar from "../shared/progress-bar";
 
 const UploadFile = () => {
 
@@ -92,6 +93,7 @@ const UploadFile = () => {
   return (
       <>
         <Header />
+        <ProgressBar progress={5} />
         <div className="container-fluid mb-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">
