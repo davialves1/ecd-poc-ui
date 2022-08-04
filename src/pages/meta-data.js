@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
-import Header from "../../shared/header";
-import DataContext from "../../shared/data-context";
+import {useContext, useEffect} from "react";
+import Header from "../shared/header";
+import DataContext from "../shared/data-context";
 import {Link} from "react-router-dom";
 
 const MetaData = () => {

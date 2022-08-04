@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Header from "../shared/header";
+import {Link} from "react-router-dom";
 
 const ReadFile = () => {
 
@@ -57,6 +58,7 @@ const ReadFile = () => {
             <div className="col-10 mx-auto">
               <h1>Table</h1>
               <Table />
+              <Link to="/meta-data" className="btn btn-outline-primary px-5 py-3 float-start mt-5">Back</Link>
             </div>
           </div>
         </div>

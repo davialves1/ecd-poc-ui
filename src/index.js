@@ -4,7 +4,7 @@ import './index.scss';
 import '../node_modules/bootstrap/dist/css/bootstrap-grid.min.css';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import MetaData from "./pages/meta-data/meta-data";
+import MetaData from "./pages/meta-data";
 import ReadFile from "./pages/read-file";
 import UploadFile from "./pages/upload-file";
 import {DataProvider} from "./shared/data-context";
