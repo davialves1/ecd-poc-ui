@@ -1,10 +1,13 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
+import DataContext from "./data-context";
 
-const ProgressBar = ({progress}) => {
+const ProgressBar = ({progressNumber}) => {
 
-  const [progressAnimated, setProgressAnimated] = useState(0);
+  const {progress} = useContext(DataContext);
 
-  setTimeout(() => setProgressAnimated(progress), 200);
+  const [progressAnimated, setProgressAnimated] = useState(progress ? progress : 0);
+
+  setTimeout(() => setProgressAnimated(progressNumber), 200);
 
   return (
       <>

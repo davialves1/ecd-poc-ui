@@ -6,11 +6,13 @@ import ProgressBar from "../shared/progress-bar";
 
 const MetaData = () => {
 
+  const {setProgress, progress, metaData} = useContext(DataContext);
+
   useEffect(() => {
     document.title = 'ECD | Meta Data';
-  });
 
-  const {metaData} = useContext(DataContext);
+    setProgress(50);
+  });
 
   const BackendInfo = () => {
     if (metaData.backend) {
@@ -31,7 +33,7 @@ const MetaData = () => {
   return (
       <>
         <Header />
-        <ProgressBar progress={35} />
+        <ProgressBar progressNumber={progress} />
         <div className="container-fluid mb-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {AgGridReact} from "ag-grid-react";
 import axios from 'axios';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -6,6 +6,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import Header from "../shared/header";
 import {Link} from "react-router-dom";
 import ProgressBar from "../shared/progress-bar";
+import DataContext from "../shared/data-context";
 
 const ReadFile = () => {
 
@@ -13,8 +14,12 @@ const ReadFile = () => {
 
   const [rowData, setRowData] = useState([]);
 
+  const {setProgress, progress} = useContext(DataContext);
+
   useEffect( () => {
     document.title = 'ECD - Read Excel file';
+
+    setProgress(75);
 
     axios
       .get('http://localhost:8080/read-file')
@@ -23,11 +28,11 @@ const ReadFile = () => {
         getColumns(response.data.rows[0]);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [setProgress]);
 
   const getColumns = (data) => {
     setColumns(Object.keys(data).map((column) => {
-      return {field: column, filter: true, editable: true}
+      return {field: column, filter: true, editable: true, sortable: true}
     }));
   }
 
@@ -54,7 +59,7 @@ const ReadFile = () => {
     return (
         <>
           <Header />
-          <ProgressBar progress={75} />
+          <ProgressBar progressNumber={progress} />
           <div className="container-fluid">
           <div className="row">
             <div className="col-10 mx-auto">

@@ -1,33 +1,42 @@
 import Header from "../shared/header";
-import {useState, useEffect, useContext} from "react";
+import {useState, useEffect, useContext, useCallback} from "react";
 import axios from "axios";
 import DataContext from "../shared/data-context";
 import {useNavigate} from "react-router-dom";
 import ProgressBar from "../shared/progress-bar";
 
 const UploadFile = () => {
-
-  useEffect(() => {
-    document.title = 'ECD | Select a file';
-  });
-
-  const {setMetaData} = useContext(DataContext);
+  const {progress, setProgress, file, setFile, setMetaData} = useContext(DataContext);
 
   const [formData, setFormData] = useState(new FormData());
 
   const [fileName, setFileName] = useState('');
 
-  const navigate = useNavigate();
-
-  const buttonIsActive = () => !!formData.has('file');
-
-  const updateFormData = (file) => {
+  const updateFormData = useCallback((file) => {
     const newFormData = new FormData();
     newFormData.append('file', file);
     setFormData(newFormData);
     setMetaData(null);
     setFileName(file.name);
-  };
+    setProgress(12.5);
+  }, [setMetaData, setProgress]);
+
+  const updateFile = useCallback(() => {
+    if (file) {
+      updateFormData(file);
+    }
+  }, [file, updateFormData])
+
+  useEffect(() => {
+    document.title = 'ECD | Select a file';
+    updateFile();
+  }, [file, updateFile] );
+
+
+
+  const navigate = useNavigate();
+
+  const buttonIsActive = () => !!formData.has('file');
 
   const onDragOver = (event) => {
     event.stopPropagation();
@@ -38,11 +47,13 @@ const UploadFile = () => {
     event.stopPropagation();
     event.preventDefault();
     const file = event.dataTransfer.files[0];
+    setFile(file);
     updateFormData(file);
   }
 
   const onChangeFile = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     updateFormData(file);
   };
 
@@ -57,32 +68,25 @@ const UploadFile = () => {
 
   const FileDropArea = () => {
     return (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+        <div>
           <div id="drop-file-zone"
-               className="bg-light"
+               className="bg-light row"
                style={{
                  marginTop: 20,
                  width: '100%',
                  height: 400,
-                 borderRadius: 10,
-                 display: 'flex',
-                 alignItems: 'center',
-                 justifyContent: 'center',}}
+                 borderRadius: 10,}}
                onDragOver={onDragOver}
                onDropCapture={onDropFile}>
-            <form>
+            <span className="col-12 d-flex align-items-center justify-content-center">{fileName}</span>
+            <form className="col-12 d-flex align-items-start justify-content-center">
               <input id="file-selector"
-                     style={{margin: 40, display: "none"}}
+                     style={{display: "none"}}
                      type="file"
                      onChange={onChangeFile} />
               <label className="btn btn-primary px-5 py-3" htmlFor="file-selector">
                 Drag or select a file
               </label>
-              <p style={{padding: 20}}>{fileName}</p>
               <br/>
             </form>
           </div>
@@ -93,7 +97,7 @@ const UploadFile = () => {
   return (
       <>
         <Header />
-        <ProgressBar progress={5} />
+        <ProgressBar progressNumber={progress} />
         <div className="container-fluid mb-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">
@@ -104,7 +108,7 @@ const UploadFile = () => {
                       disabled={!buttonIsActive()}
                       onClick={sendFileToBackend}
                       >
-                Send the file
+                Read Meta Data
               </button>
             </div>
           </div>
