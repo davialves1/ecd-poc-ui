@@ -32,8 +32,6 @@ const UploadFile = () => {
     updateFile();
   }, [file, updateFile] );
 
-
-
   const navigate = useNavigate();
 
   const buttonIsActive = () => !!formData.has('file');

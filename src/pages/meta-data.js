@@ -15,7 +15,7 @@ const MetaData = () => {
   });
 
   const BackendInfo = () => {
-    if (metaData.backend) {
+    if (metaData && metaData.backend) {
       const author = metaData.backend.author ? metaData.backend.author : '-';
       return (
           <div className="text-start">

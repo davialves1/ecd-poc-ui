@@ -32,9 +32,21 @@ const ReadFile = () => {
 
   const getColumns = (data) => {
     setColumns(Object.keys(data).map((column) => {
-      return {field: column, filter: true, editable: true, sortable: true}
+      return {field: column, filter: true, sortable: true, editable: column !== 'id', onCellValueChanged: updateValue}
     }));
   }
+
+  const updateValue = (value) => {
+    const dto = {
+      id: value.data.id,
+      column: value.colDef.field,
+      newValue: value.newValue
+    };
+    axios.put('http://localhost:8080/update-value', dto)
+      .then((response) => console.log('Value updated', response))
+      .catch((err) => console.log(err));
+  }
+
 
     const Table = () => {
       if (columns.length === 0) {
