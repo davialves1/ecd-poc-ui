@@ -6,12 +6,16 @@ import ProgressBar from "../shared/progress-bar";
 
 const MetaData = () => {
 
-  const {setProgress, progress, metaData} = useContext(DataContext);
+  const {file, setProgress, progress, metaData} = useContext(DataContext);
 
   useEffect(() => {
     document.title = 'ECD | Meta Data';
 
-    setProgress(50);
+    if (file) {
+      setProgress(50);
+    } else {
+      setProgress(1);
+    }
   });
 
   const BackendInfo = () => {
@@ -19,6 +23,7 @@ const MetaData = () => {
       const author = metaData.backend.author ? metaData.backend.author : '-';
       return (
           <div className="text-start">
+            <p>File Name: <strong>{metaData.frontend.get('file').name}</strong></p>
             <p>Author: <strong>{author}</strong></p>
             <p>Creation Date: <strong>{metaData.backend.creationDate}</strong></p>
             <p>Last Modified Date: <strong>{metaData.backend.lastModifiedDate}</strong></p>
@@ -40,7 +45,9 @@ const MetaData = () => {
               <h1 className="text-start">Meta Data</h1>
             </div>
             <div className="col-10 mx-auto text-center p-5 bg-light mt-5 rounded">
-              <BackendInfo/>
+              <div className="text-center mx-auto" style={{width: 'fit-content'}}>
+                <BackendInfo/>
+              </div>
             </div>
             <div className="col-10 mx-auto text-center mt-5 rounded">
               <Link to="/upload" className="btn btn-outline-primary px-5 py-3 float-start">Back</Link>

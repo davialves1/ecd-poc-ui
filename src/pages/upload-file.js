@@ -76,8 +76,8 @@ const UploadFile = () => {
                  borderRadius: 10,}}
                onDragOver={onDragOver}
                onDropCapture={onDropFile}>
-            <span className="col-12 d-flex align-items-center justify-content-center">{fileName}</span>
-            <form className="col-12 d-flex align-items-start justify-content-center">
+            <span className="col-12 d-flex align-items-end justify-content-center pb-2">{fileName}</span>
+            <form className="col-12 d-flex align-items-start justify-content-center pt-2">
               <input id="file-selector"
                      style={{display: "none"}}
                      type="file"

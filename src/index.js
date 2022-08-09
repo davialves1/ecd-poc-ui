@@ -17,7 +17,7 @@ root.render(
       <DataProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<MetaData />} />
+            <Route path="/" element={<UploadFile />} />
             <Route path="upload" element={<UploadFile />} />
             <Route path="meta-data" element={<MetaData />} />
             <Route path="read-file" element={<ReadFile />} />

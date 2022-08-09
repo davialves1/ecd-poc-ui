@@ -17,7 +17,7 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse float-end w-100"
                  id="navbarSupportedContent">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-none">
                 <li className="nav-item">
                   <a className="nav-link" href="/upload">Select a File</a>
                 </li>

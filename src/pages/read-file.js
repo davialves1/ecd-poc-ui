@@ -16,10 +16,17 @@ const ReadFile = () => {
 
   const {setProgress, progress} = useContext(DataContext);
 
+
   useEffect( () => {
     document.title = 'ECD - Read Excel file';
 
     setProgress(75);
+
+    const getColumns = (data) => {
+      setColumns(Object.keys(data).map((column) => {
+        return {field: column, filter: true, sortable: true, editable: column !== 'id', onCellValueChanged: updateValue}
+      }));
+    }
 
     axios
       .get('http://localhost:8080/read-file')
@@ -29,12 +36,6 @@ const ReadFile = () => {
       })
       .catch((err) => console.error(err));
   }, [setProgress]);
-
-  const getColumns = (data) => {
-    setColumns(Object.keys(data).map((column) => {
-      return {field: column, filter: true, sortable: true, editable: column !== 'id', onCellValueChanged: updateValue}
-    }));
-  }
 
   const updateValue = (value) => {
     const dto = {
@@ -75,7 +76,7 @@ const ReadFile = () => {
           <div className="container-fluid">
           <div className="row">
             <div className="col-10 mx-auto">
-              <h1>Table</h1>
+              <h1>Data</h1>
               <Table />
               <Link to="/meta-data" className="btn btn-outline-primary px-5 py-3 float-start mt-5">Back</Link>
             </div>

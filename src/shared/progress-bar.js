@@ -11,7 +11,7 @@ const ProgressBar = ({progressNumber}) => {
 
   return (
       <>
-        <div className="container-fluid mb-5">
+        <div className="container-fluid mb-5 d-none">
           <div className="row">
             <div className="col-10 mx-auto">
               <div className="progress">
