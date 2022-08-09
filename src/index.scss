@@ -13,3 +13,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.error {
+  background-color: indianred;
+  color: white;
+}
+
+.shadow {
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
+.tooltip {
+  width: 200px;
+  height: 100px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: white;
+}

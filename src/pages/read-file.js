@@ -16,6 +16,17 @@ const ReadFile = () => {
 
   const {setProgress, progress} = useContext(DataContext);
 
+  const CustomTooltip = (params) => {
+    const column = params.colDef.field;
+    if (params.data.errors[column]) {
+      return (
+      <p className="shadow" style={{width: 200, height: 100, borderRadius: 10, padding: 20, backgroundColor: 'white'}}>
+        <span style={{fontWeight: 'bold', color: 'indianred'}}>Error:</span> {params.data.errors[column]}
+      </p>)
+    } else {
+      return <p className="shadow" style={{display: 'flex', justifyItems: 'center', alignItems: 'center', alignContent: 'center', textAlign: 'center', width: 100, height: 50, borderRadius: 10, padding: 20, backgroundColor: 'white'}}>{params.data[column]}</p>
+    };
+  }
 
   useEffect( () => {
     document.title = 'ECD - Read Excel file';
@@ -23,9 +34,23 @@ const ReadFile = () => {
     setProgress(75);
 
     const getColumns = (data) => {
-      setColumns(Object.keys(data).map((column) => {
-        return {field: column, filter: true, sortable: true, editable: column !== 'id', onCellValueChanged: updateValue}
-      }));
+      const columnDef = Object.keys(data).map((column) => {
+        return {
+          field: column,
+          filter: true,
+          sortable: true,
+          hide: column === 'errors',
+          editable: column !== 'id',
+          onCellValueChanged: updateValue,
+          tooltipValueGetter: (params) => params,
+          tooltipComponent: CustomTooltip,
+          cellClassRules: {
+            'error': params => !!params.data.errors[column]
+            }
+          }
+      });
+
+      setColumns(columnDef);
     }
 
     axios
@@ -46,10 +71,9 @@ const ReadFile = () => {
     axios.put('http://localhost:8080/update-value', dto)
       .then((response) => console.log('Value updated', response))
       .catch((err) => console.log(err));
-  }
+  };
 
-
-    const Table = () => {
+  const Table = () => {
       if (columns.length === 0) {
         return <></>
       } else {
@@ -61,6 +85,7 @@ const ReadFile = () => {
                   alignItems: 'center'
                 }}>
                   <AgGridReact
+                      tooltipShowDelay={0}
                       rowData={rowData}
                       columnDefs={columns}>
                   </AgGridReact>
@@ -68,7 +93,6 @@ const ReadFile = () => {
         );
       }
     }
-
     return (
         <>
           <Header />
