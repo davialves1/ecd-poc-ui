@@ -24,8 +24,32 @@ const ReadFile = () => {
         <span style={{fontWeight: 'bold', color: 'indianred'}}>Error:</span> {params.data.errors[column]}
       </p>)
     } else {
-      return <p className="shadow" style={{display: 'flex', justifyItems: 'center', alignItems: 'center', alignContent: 'center', textAlign: 'center', width: 100, height: 50, borderRadius: 10, padding: 20, backgroundColor: 'white'}}>{params.data[column]}</p>
+      return <p className="shadow"
+                style={{display: 'flex',
+                        justifyItems: 'center',
+                        alignItems: 'center',
+                        alignContent: 'center',
+                        textAlign: 'center',
+                        width: 100,
+                        height: 50,
+                        borderRadius: 10,
+                        padding: 20,
+                        backgroundColor: 'white'}}>
+        {params.data[column]}</p>
     };
+  }
+
+  const CustomHeaderComponent = (params) => {
+    const column = params.columnGroup.children[0].colId;
+    return (
+        <select className="form-select" aria-label="Default select example">
+          <option defaultValue={column}>{column}</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+    )
+
   }
 
   useEffect( () => {
@@ -36,17 +60,23 @@ const ReadFile = () => {
     const getColumns = (data) => {
       const columnDef = Object.keys(data).map((column) => {
         return {
-          field: column,
-          filter: true,
-          sortable: true,
-          hide: column === 'errors',
-          editable: column !== 'id',
-          onCellValueChanged: updateValue,
-          tooltipValueGetter: (params) => params,
-          tooltipComponent: CustomTooltip,
-          cellClassRules: {
-            'error': params => !!params.data.errors[column]
+          headerGroupComponent: CustomHeaderComponent,
+          suppressMenu: true,
+          children: [
+            {
+              field: column,
+              filter: true,
+              sortable: true,
+              hide: column === 'errors',
+              editable: column !== 'id',
+              onCellValueChanged: updateValue,
+              tooltipValueGetter: (params) => params,
+              tooltipComponent: CustomTooltip,
+              cellClassRules: {
+                'error': params => !!params.data.errors[column]
+              }
             }
+          ]
           }
       });
 
