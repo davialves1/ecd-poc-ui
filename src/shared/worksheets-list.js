@@ -2,23 +2,37 @@ import {ListBox} from "primereact/listbox";
 import {useState} from "react";
 import {InputText} from "primereact/inputtext";
 
+
+const initialWorksheets = [
+  'Worksheet 01',
+  'Worksheet 02',
+  'Charts 2008',
+  'Worksheet 01 Copy',
+  'Worksheet 03',
+  'Worksheet 04',
+  'Charts 2020',
+  'Final Comparison',
+  'USA California',
+];
+
 const WorksheetsList = () => {
 
-  const [worksheet, setWorksheet] = useState('Worksheet 01');
+  const [selectedWorksheet, setSelectedWorksheet] = useState('Worksheet 01');
 
   const [query, setQuery] = useState('');
 
-  const worksheets = [
-      'Worksheet 01',
-      'Worksheet 02',
-      'Charts 2008',
-      'Worksheet 01 Copy',
-      'Worksheet 03',
-      'Worksheet 04',
-      'Charts 2020',
-      'Final Comparison',
-      'USA California',
-  ]
+  const [worksheets, setWorksheets] = useState(initialWorksheets);
+
+
+  const onSearch = (e) => {
+    setQuery(e.target.value.toLowerCase());
+    let updatedWorksheets = initialWorksheets;
+    if (query.length > 1) {
+      updatedWorksheets = initialWorksheets.filter((ws) => ws.toLowerCase().includes(query));
+      if (updatedWorksheets.length === 0) updatedWorksheets = initialWorksheets;
+    }
+    setWorksheets(updatedWorksheets);
+  }
 
   return (
       <div className="h-auto w-100 my-5 rounded-2">
@@ -27,10 +41,13 @@ const WorksheetsList = () => {
             <i className="pi pi-search" />
             <InputText value={query}
                        className="w-100"
-                       onChange={(e) => setQuery(e.target.value)}
+                       onChange={onSearch}
                        placeholder="Search" />
         </span>
-        <ListBox className="w-100" value={worksheet} options={worksheets} onChange={(e) => setWorksheet(e.value)}/>
+        <ListBox className="w-100"
+                 value={selectedWorksheet}
+                 options={worksheets}
+                 onChange={(e) => setSelectedWorksheet(e.value)}/>
       </div>
   );
 };

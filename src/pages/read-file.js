@@ -130,7 +130,7 @@ const ReadFile = () => {
           <div className="container-fluid">
           <div className="row vh-100">
             <WorksheetsMenu />
-            <div className="col-8 mx-auto pt-5">
+            <div className="col-9 mx-auto pt-5">
               <h1>Data</h1>
               <Table />
               <Link to="/meta-data" className="float-start mt-5">
