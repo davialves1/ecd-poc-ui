@@ -7,6 +7,9 @@ import Header from "../shared/header";
 import {Link} from "react-router-dom";
 import ProgressBar from "../shared/progress-bar";
 import DataContext from "../shared/data-context";
+import EntityMapper from "../shared/entity-mapper";
+import WorksheetsMenu from "../shared/worksheets-menu";
+import {Button} from "primereact/button";
 
 const ReadFile = () => {
 
@@ -42,17 +45,15 @@ const ReadFile = () => {
   const CustomHeaderComponent = (params) => {
     const column = params.columnGroup.children[0].colId;
     return (
-        <select className="form-select" aria-label="Default select example">
-          <option defaultValue={column}>{column}</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-    )
+        <>
+          <EntityMapper column={column} inputCount={1} params={params}/>
+        </>
+      )
 
   }
 
   useEffect( () => {
+
     document.title = 'ECD - Read Excel file';
 
     setProgress(75);
@@ -79,7 +80,6 @@ const ReadFile = () => {
           ]
           }
       });
-
       setColumns(columnDef);
     }
 
@@ -109,7 +109,7 @@ const ReadFile = () => {
       } else {
         return (
                 <div className="ag-theme-alpine" style={{
-                  height: 400,
+                  height: 600,
                   width: '100%',
                   alignContent: 'center',
                   alignItems: 'center'
@@ -128,11 +128,14 @@ const ReadFile = () => {
           <Header />
           <ProgressBar progressNumber={progress} />
           <div className="container-fluid">
-          <div className="row">
-            <div className="col-10 mx-auto">
+          <div className="row vh-100">
+            <WorksheetsMenu />
+            <div className="col-8 mx-auto pt-5">
               <h1>Data</h1>
               <Table />
-              <Link to="/meta-data" className="btn btn-outline-primary px-5 py-3 float-start mt-5">Back</Link>
+              <Link to="/meta-data" className="float-start mt-5">
+                <Button label="Previous page"/>
+              </Link>
             </div>
           </div>
         </div>

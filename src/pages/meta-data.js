@@ -3,6 +3,7 @@ import Header from "../shared/header";
 import DataContext from "../shared/data-context";
 import {Link} from "react-router-dom";
 import ProgressBar from "../shared/progress-bar";
+import {Button} from "primereact/button";
 
 const MetaData = () => {
 
@@ -39,7 +40,7 @@ const MetaData = () => {
       <>
         <Header />
         <ProgressBar progressNumber={progress} />
-        <div className="container-fluid mb-5">
+        <div className="container-fluid my-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">
               <h1 className="text-start">Meta Data</h1>
@@ -50,8 +51,12 @@ const MetaData = () => {
               </div>
             </div>
             <div className="col-10 mx-auto text-center mt-5 rounded">
-              <Link to="/upload" className="btn btn-outline-primary px-5 py-3 float-start">Back</Link>
-              <Link to="/read-file" className="btn btn-outline-primary px-5 py-3 float-end">Read File</Link>
+              <Link to="/upload" className="float-start">
+                <Button label="Previous page"/>
+              </Link>
+              <Link to="/read-file" className="float-end">
+                <Button label="Read File"/>
+              </Link>
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import axios from "axios";
 import DataContext from "../shared/data-context";
 import {useNavigate} from "react-router-dom";
 import ProgressBar from "../shared/progress-bar";
+import {Button} from "primereact/button";
 
 const UploadFile = () => {
   const {progress, setProgress, file, setFile, setMetaData} = useContext(DataContext);
@@ -82,8 +83,8 @@ const UploadFile = () => {
                      style={{display: "none"}}
                      type="file"
                      onChange={onChangeFile} />
-              <label className="btn btn-primary px-5 py-3" htmlFor="file-selector">
-                Drag or select a file
+              <label htmlFor="file-selector">
+                <Button className="p-button-outlined" label="Drag or select a file"/>
               </label>
               <br/>
             </form>
@@ -96,18 +97,16 @@ const UploadFile = () => {
       <>
         <Header />
         <ProgressBar progressNumber={progress} />
-        <div className="container-fluid mb-5">
+        <div className="container-fluid my-5">
           <div className="row">
             <div className="col-10 mx-auto text-center">
               <h1 className="text-start">Select a file</h1>
               <FileDropArea />
-              <button type="submit"
-                      className="float-end mt-5 btn btn-outline-primary px-5 py-3"
+              <Button className="float-end mt-5"
+                      type="submit"
+                      label="Read Meta Data"
                       disabled={!buttonIsActive()}
-                      onClick={sendFileToBackend}
-                      >
-                Read Meta Data
-              </button>
+                      onClick={sendFileToBackend} />
             </div>
           </div>
         </div>
