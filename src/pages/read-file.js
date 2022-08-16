@@ -17,7 +17,7 @@ const ReadFile = () => {
 
   const [rowData, setRowData] = useState([]);
 
-  const {setProgress, progress} = useContext(DataContext);
+  const {setProgress, progress, selectedWorksheet} = useContext(DataContext);
 
   const CustomTooltip = (params) => {
     const column = params.colDef.field;
@@ -46,11 +46,11 @@ const ReadFile = () => {
     const column = params.columnGroup.children[0].colId;
     return (
         <>
-          <EntityMapper column={column} inputCount={1} params={params}/>
+          <EntityMapper column={column} params={params}/>
         </>
       )
-
   }
+
 
   useEffect( () => {
 
@@ -63,10 +63,13 @@ const ReadFile = () => {
         return {
           headerGroupComponent: CustomHeaderComponent,
           suppressMenu: true,
+          autoHeaderHeight: true,
+          resizable: true,
           children: [
             {
               field: column,
               filter: true,
+              resizable: true,
               sortable: true,
               hide: column === 'errors',
               editable: column !== 'id',
@@ -108,7 +111,7 @@ const ReadFile = () => {
         return <></>
       } else {
         return (
-                <div className="ag-theme-alpine" style={{
+                <div className="ag-theme-alpine mt-4" style={{
                   height: 600,
                   width: '100%',
                   alignContent: 'center',
@@ -117,6 +120,7 @@ const ReadFile = () => {
                   <AgGridReact
                       tooltipShowDelay={0}
                       rowData={rowData}
+                      onGridReady={(params) => params.api.setGroupHeaderHeight(130)}
                       columnDefs={columns}>
                   </AgGridReact>
                 </div>
@@ -130,11 +134,11 @@ const ReadFile = () => {
           <div className="container-fluid">
           <div className="row vh-100">
             <WorksheetsMenu />
-            <div className="col-9 mx-auto pt-5">
-              <h1>Data</h1>
+            <div className="col-8 mx-auto pt-5">
+              <h1>Worksheet: <span className="fw-lighter">{selectedWorksheet}</span></h1>
               <Table />
               <Link to="/meta-data" className="float-start mt-5">
-                <Button label="Previous page"/>
+                <Button className="p-button-outlined" label="Previous page"/>
               </Link>
             </div>
           </div>

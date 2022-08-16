@@ -20,11 +20,11 @@ const WorksheetsMenu = () => {
   }
 
   return (
-      <div className="col-2 bg-light vh-100">
-        <h5 className="mt-5">Uploading</h5>
+      <div className="col-3 bg-light vh-100 px-5">
+        <h5 className="mt-5">Uploading Assistant</h5>
         Excel File: {metaData && metaData.frontend.get('file').name}
         <Link to="/upload" className="">
-          <Button className="p-button-outlined w-100" label="Cancel Import"/>
+          <Button className="p-button-outlined w-100 mt-3" label="Cancel Import"/>
         </Link>
         <WorksheetsList />
         <div className="align-self-end mb-5">

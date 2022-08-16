@@ -1,6 +1,7 @@
 import {ListBox} from "primereact/listbox";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {InputText} from "primereact/inputtext";
+import DataContext from "./data-context";
 
 
 const initialWorksheets = [
@@ -17,7 +18,7 @@ const initialWorksheets = [
 
 const WorksheetsList = () => {
 
-  const [selectedWorksheet, setSelectedWorksheet] = useState('Worksheet 01');
+  const {selectedWorksheet, setSelectedWorksheet} = useContext(DataContext);
 
   const [query, setQuery] = useState('');
 
@@ -25,10 +26,10 @@ const WorksheetsList = () => {
 
 
   const onSearch = (e) => {
-    setQuery(e.target.value.toLowerCase());
+    setQuery(e.target.value);
     let updatedWorksheets = initialWorksheets;
-    if (query.length > 1) {
-      updatedWorksheets = initialWorksheets.filter((ws) => ws.toLowerCase().includes(query));
+    if (query.length !== 0) {
+      updatedWorksheets = initialWorksheets.filter((ws) => ws.toLowerCase().includes(query.toLowerCase()));
       if (updatedWorksheets.length === 0) updatedWorksheets = initialWorksheets;
     }
     setWorksheets(updatedWorksheets);
@@ -42,6 +43,7 @@ const WorksheetsList = () => {
             <InputText value={query}
                        className="w-100"
                        onChange={onSearch}
+                       onKeyUp={onSearch}
                        placeholder="Search" />
         </span>
         <ListBox className="w-100"

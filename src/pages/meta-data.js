@@ -52,7 +52,7 @@ const MetaData = () => {
             </div>
             <div className="col-10 mx-auto text-center mt-5 rounded">
               <Link to="/upload" className="float-start">
-                <Button label="Previous page"/>
+                <Button className="p-button-outlined" label="Previous page"/>
               </Link>
               <Link to="/read-file" className="float-end">
                 <Button label="Read File"/>
