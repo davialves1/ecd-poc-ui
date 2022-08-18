@@ -32,7 +32,7 @@ const MetaData = () => {
           </div>
       );
     } else {
-      return <>You need to <Link to="/upload" >upload a file</Link></>;
+      return <div className="py-5 my-5">First you need to <Link to="/upload" >upload a file.</Link></div>;
     }
   }
 

@@ -17,6 +17,8 @@ const ReadFile = () => {
 
   const [rowData, setRowData] = useState([]);
 
+  let height = 130;
+
   const {setProgress, progress, selectedWorksheet} = useContext(DataContext);
 
   const CustomTooltip = (params) => {
@@ -44,11 +46,16 @@ const ReadFile = () => {
 
   const CustomHeaderComponent = (params) => {
     const column = params.columnGroup.children[0].colId;
-    return (
-        <>
-          <EntityMapper column={column} params={params}/>
-        </>
-      )
+    const increaseHeight = () => {
+      if (height < 240) {
+        height += 47;
+      }
+      params.api.setGroupHeaderHeight(height);
+    }
+
+    const mapper = <EntityMapper column={column} params={params} increaseHeight={increaseHeight}/>;
+
+    return column === 'id' ? <></> : mapper;
   }
 
 
@@ -93,6 +100,7 @@ const ReadFile = () => {
         getColumns(response.data.rows[0]);
       })
       .catch((err) => console.error(err));
+    // eslint-disable-next-line
   }, [setProgress]);
 
   const updateValue = (value) => {
@@ -120,7 +128,7 @@ const ReadFile = () => {
                   <AgGridReact
                       tooltipShowDelay={0}
                       rowData={rowData}
-                      onGridReady={(params) => params.api.setGroupHeaderHeight(130)}
+                      onGridReady={(params) => params.api.setGroupHeaderHeight(height)}
                       columnDefs={columns}>
                   </AgGridReact>
                 </div>
@@ -132,19 +140,19 @@ const ReadFile = () => {
           <Header />
           <ProgressBar progressNumber={progress} />
           <div className="container-fluid">
-          <div className="row vh-100">
-            <WorksheetsMenu />
-            <div className="col-8 mx-auto pt-5">
-              <h1>Worksheet: <span className="fw-lighter">{selectedWorksheet}</span></h1>
-              <Table />
-              <Link to="/meta-data" className="float-start mt-5">
-                <Button className="p-button-outlined" label="Previous page"/>
-              </Link>
+            <div className="row vh-100">
+              <WorksheetsMenu />
+              <div className="col-8 mx-auto pt-5">
+                <h1>Worksheet: <span className="fw-lighter">{selectedWorksheet}</span></h1>
+                <Table />
+                <Link to="/meta-data" className="float-start mt-5">
+                  <Button className="p-button-outlined" label="Previous page"/>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
         </>
-          )
+    )
   }
 
 export default ReadFile

@@ -31,8 +31,8 @@ const WorksheetsMenu = () => {
           <h5>Actions</h5>
           <ConfirmDialog/>
           <Button className="w-100 mt-3" label="Map Columns" onClick={alert} />
-          <Button className="w-100 mt-3" label="Data Validation" onClick={alert} />
-          <Button className="w-100 mt-3" label="Upload" onClick={alert} />
+          <Button className="w-100 mt-2" label="Data Validation" onClick={alert} />
+          <Button className="w-100 mt-2" label="Upload" onClick={alert} />
         </div>
       </div>
   )
