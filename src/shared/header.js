@@ -16,13 +16,13 @@ const Header = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mb-2 mb-lg-0 text-white w-100 d-flex justify-content-end me-5">
                 <li className="nav-item">
-                  <a className="nav-link text-white" href="/upload">Select a File</a>
+                  <a className="nav-link text-white opacity-50" href="/upload">Select a File</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-white" href="/meta-data">Meta Data</a>
+                  <a className="nav-link text-white opacity-50" href="/meta-data">Meta Data</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link text-white" href="/read-file">Read File</a>
+                  <a className="nav-link text-white opacity-50" href="/read-file">Read File</a>
                 </li>
               </ul>
             </div>

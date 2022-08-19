@@ -1,14 +1,15 @@
-import {useEffect, useState, useContext} from "react";
-import {AgGridReact} from "ag-grid-react";
-import axios from 'axios';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import Header from "../shared/header";
-import {Link} from "react-router-dom";
-import ProgressBar from "../shared/progress-bar";
+import axios from 'axios';
 import DataContext from "../shared/data-context";
-import EntityMapper from "../shared/entity-mapper";
+import {useEffect, useState, useContext, useCallback} from "react";
+import {Link} from "react-router-dom";
+import Header from "../shared/header";
+import ProgressBar from "../shared/progress-bar";
 import WorksheetsMenu from "../shared/worksheets-menu";
+import CustomTooltip from "../shared/custom-tooltip";
+import Grid from "../shared/grid";
+import CustomHeader from "../shared/custom-header";
 import {Button} from "primereact/button";
 
 const ReadFile = () => {
@@ -21,87 +22,51 @@ const ReadFile = () => {
 
   const {setProgress, progress, selectedWorksheet} = useContext(DataContext);
 
-  const CustomTooltip = (params) => {
-    const column = params.colDef.field;
-    if (params.data.errors[column]) {
-      return (
-      <p className="shadow" style={{width: 200, height: 100, borderRadius: 10, padding: 20, backgroundColor: 'white'}}>
-        <span style={{fontWeight: 'bold', color: 'indianred'}}>Error:</span> {params.data.errors[column]}
-      </p>)
-    } else {
-      return <p className="shadow"
-                style={{display: 'flex',
-                        justifyItems: 'center',
-                        alignItems: 'center',
-                        alignContent: 'center',
-                        textAlign: 'center',
-                        width: 100,
-                        height: 50,
-                        borderRadius: 10,
-                        padding: 20,
-                        backgroundColor: 'white'}}>
-        {params.data[column]}</p>
-    };
-  }
+  const CustomHeaderComponent = useCallback((params) => (<CustomHeader params={params} height={height} />), [height]);
 
-  const CustomHeaderComponent = (params) => {
-    const column = params.columnGroup.children[0].colId;
-    const increaseHeight = () => {
-      if (height < 240) {
-        height += 47;
+  const createColumns = useCallback((data) => {
+    const columnDef = Object.keys(data).map((column) => {
+      return {
+        headerGroupComponent: CustomHeaderComponent,
+        suppressMenu: true,
+        autoHeaderHeight: true,
+        resizable: true,
+        children: [
+          {
+            field: column,
+            filter: true,
+            resizable: true,
+            sortable: true,
+            hide: column === 'errors',
+            editable: column !== 'id',
+            onCellValueChanged: updateValue,
+            tooltipValueGetter: (params) => params,
+            tooltipComponent: CustomTooltip,
+            cellClassRules: {
+              'error': params => !!params.data.errors[column]
+            }
+          }
+        ]
       }
-      params.api.setGroupHeaderHeight(height);
-    }
+    });
+    setColumns(columnDef);
+  }, [CustomHeaderComponent]);
 
-    const mapper = <EntityMapper column={column} params={params} increaseHeight={increaseHeight}/>;
 
-    return column === 'id' ? <></> : mapper;
-  }
+  const fetchFile = useCallback(() => {
+    return axios.get('http://localhost:8080/read-file')
+    .then((response) => {
+      setRowData(response.data.rows);
+      createColumns(response.data.rows[0]);
+    })
+  }, [createColumns]);
 
 
   useEffect( () => {
-
     document.title = 'ECD - Read Excel file';
-
     setProgress(75);
-
-    const getColumns = (data) => {
-      const columnDef = Object.keys(data).map((column) => {
-        return {
-          headerGroupComponent: CustomHeaderComponent,
-          suppressMenu: true,
-          autoHeaderHeight: true,
-          resizable: true,
-          children: [
-            {
-              field: column,
-              filter: true,
-              resizable: true,
-              sortable: true,
-              hide: column === 'errors',
-              editable: column !== 'id',
-              onCellValueChanged: updateValue,
-              tooltipValueGetter: (params) => params,
-              tooltipComponent: CustomTooltip,
-              cellClassRules: {
-                'error': params => !!params.data.errors[column]
-              }
-            }
-          ]
-          }
-      });
-      setColumns(columnDef);
-    }
-
-    axios
-      .get('http://localhost:8080/read-file')
-      .then((response) => {
-        setRowData(response.data.rows);
-        getColumns(response.data.rows[0]);
-      })
-      .catch((err) => console.error(err));
-    // eslint-disable-next-line
-  }, [setProgress]);
+    fetchFile().catch((err) => console.error(err));
+  }, [setProgress, fetchFile]);
 
   const updateValue = (value) => {
     const dto = {
@@ -114,27 +79,6 @@ const ReadFile = () => {
       .catch((err) => console.log(err));
   };
 
-  const Table = () => {
-      if (columns.length === 0) {
-        return <></>
-      } else {
-        return (
-                <div className="ag-theme-alpine mt-4" style={{
-                  height: 600,
-                  width: '100%',
-                  alignContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <AgGridReact
-                      tooltipShowDelay={0}
-                      rowData={rowData}
-                      onGridReady={(params) => params.api.setGroupHeaderHeight(height)}
-                      columnDefs={columns}>
-                  </AgGridReact>
-                </div>
-        );
-      }
-    }
     return (
         <>
           <Header />
@@ -142,9 +86,9 @@ const ReadFile = () => {
           <div className="container-fluid">
             <div className="row vh-100">
               <WorksheetsMenu />
-              <div className="col-8 mx-auto pt-5">
+              <div className="col-12 col-md-8 col-lg-10 mx-auto p-2 pt-5 p-lg-5">
                 <h1>Worksheet: <span className="fw-lighter">{selectedWorksheet}</span></h1>
-                <Table />
+                <Grid columns={columns} height={height} rowData={rowData} />
                 <Link to="/meta-data" className="float-start mt-5">
                   <Button className="p-button-outlined" label="Previous page"/>
                 </Link>

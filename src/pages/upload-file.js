@@ -84,7 +84,7 @@ const UploadFile = () => {
                      type="file"
                      onChange={onChangeFile} />
               <label htmlFor="file-selector">
-                <Button type="button" className="p-button-outlined" label="Drag or select a file"/>
+                <div className="p-button p-button-outlined">Drag or select a file</div>
               </label>
               <br/>
             </form>

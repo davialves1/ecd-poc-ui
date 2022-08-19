@@ -1,40 +1,13 @@
 import {useEffect, useState} from "react";
 import {CascadeSelect} from "primereact/cascadeselect";
 import {Button} from "primereact/button";
+import {entities} from "./entities";
 
-const EntityMapper = ({column, params, increaseHeight}) => {
+const EntityMapper = ({column, increaseHeight}) => {
 
   const [multiValue, setMultiValue] = useState([]);
 
   const [inputCount, setInputCount] = useState(1);
-
-  const entities = [
-    {
-      entity: 'Engine',
-      properties: [
-        {name: 'RPM Max', entity: 'Engine'},
-        {name: 'Power PS', entity: 'Engine'},
-        {name: 'Code', entity: 'Engine'},
-        {name: 'Power HP', entity: 'Engine'}
-      ]
-    },
-    {
-      entity: 'Transmission',
-      properties: [
-        {name: 'Validation Date', entity: 'Transmission'},
-        {name: 'Position', entity: 'Transmission'},
-        {name: 'Drive Type', entity: 'Transmission'},
-        {name: 'Remarks', entity: 'Transmission'}
-      ]
-    },
-    {
-      entity: 'Brand',
-      properties: [
-        {name: 'Name', entity: 'Brand'},
-        {name: 'Short Name', entity: 'Brand'}
-      ]
-    },
-  ]
 
   useEffect(() => {
     const createDTO = (mapping) => ({column,mapping});
@@ -50,8 +23,8 @@ const EntityMapper = ({column, params, increaseHeight}) => {
   };
 
   const addMap = () => {
+    setInputCount((prevState => (prevState + 1)));
     increaseHeight();
-    setInputCount((prevState => (prevState + 1)))
   }
 
   const mappings = [...Array(inputCount).keys()];
