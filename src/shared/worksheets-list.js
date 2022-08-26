@@ -1,5 +1,5 @@
 import {ListBox} from "primereact/listbox";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {InputText} from "primereact/inputtext";
 import DataContext from "./data-context";
 
@@ -20,10 +20,11 @@ const WorksheetsList = () => {
 
   const {selectedWorksheet, setSelectedWorksheet} = useContext(DataContext);
 
+  const {worksheets, setWorksheets} = useContext(DataContext);
+
+  const [worksheetList, setWorksheetList] = useState([]);
+
   const [query, setQuery] = useState('');
-
-  const [worksheets, setWorksheets] = useState(initialWorksheets);
-
 
   const onSearch = (e) => {
     setQuery(e.target.value);
@@ -34,6 +35,17 @@ const WorksheetsList = () => {
     }
     setWorksheets(updatedWorksheets);
   }
+
+  const onChangeWorksheet = (e) => {
+    const selected = e.originalEvent.target.textContent;
+    setSelectedWorksheet(selected);
+  }
+
+  useEffect(() => {
+    if (worksheets) {
+      setWorksheetList(Object.keys(worksheets));
+    }
+  }, [worksheets]);
 
   return (
       <div className="h-auto w-100 my-5 rounded-2">
@@ -48,8 +60,8 @@ const WorksheetsList = () => {
         </span>
         <ListBox className="w-100"
                  value={selectedWorksheet}
-                 options={worksheets}
-                 onChange={(e) => setSelectedWorksheet(e.value)}/>
+                 options={worksheetList}
+                 onChange={(e) => onChangeWorksheet(e)}/>
       </div>
   );
 };

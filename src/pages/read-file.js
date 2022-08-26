@@ -20,7 +20,11 @@ const ReadFile = () => {
 
   let height = 130;
 
-  const {setProgress, progress, selectedWorksheet} = useContext(DataContext);
+  const {setProgress, progress} = useContext(DataContext);
+
+  const {selectedWorksheet, setSelectedWorksheet} = useContext(DataContext);
+
+  const {worksheets, setWorksheets} = useContext(DataContext);
 
   const CustomHeaderComponent = useCallback((params) => (<CustomHeader params={params} height={height} />), [height]);
 
@@ -43,7 +47,8 @@ const ReadFile = () => {
             tooltipValueGetter: (params) => params,
             tooltipComponent: CustomTooltip,
             cellClassRules: {
-              'error': params => !!params.data.errors[column]
+              // 'error': params => !!params.data.errors[column]
+              'error': params => false
             }
           }
         ]
@@ -54,24 +59,37 @@ const ReadFile = () => {
 
 
   const fetchFile = useCallback(() => {
-    return axios.get('http://localhost:8080/read-file')
+    return axios.get('http://localhost:8080/read-file-dynamic')
     .then((response) => {
-      setRowData(response.data.rows);
-      createColumns(response.data.rows[0]);
-    })
-  }, [createColumns]);
+      const sheets = response.data.worksheets;
+      const worksheetsKeys = Object.keys(sheets);
+      setWorksheets(sheets);
+      const firstWorksheet = sheets[worksheetsKeys[0]];
+      setSelectedWorksheet(worksheetsKeys[0]);
+      createColumns(firstWorksheet[0]);
+      setRowData(firstWorksheet);
 
+    })
+  }, [createColumns, setWorksheets, setSelectedWorksheet]);
+
+  useEffect(() => {
+    if (selectedWorksheet) {
+      setRowData(worksheets[selectedWorksheet]);
+      createColumns(worksheets[selectedWorksheet][0]);
+    }
+  }, [selectedWorksheet, createColumns, worksheets])
 
   useEffect( () => {
     document.title = 'ECD - Read Excel file';
     setProgress(75);
     fetchFile().catch((err) => console.error(err));
+
   }, [setProgress, fetchFile]);
 
   const updateValue = (value) => {
     const dto = {
-      id: value.data.id,
-      column: value.colDef.field,
+      id: +value.data.Id,
+      column: value.colDef.field.toLowerCase(),
       newValue: value.newValue
     };
     axios.put('http://localhost:8080/update-value', dto)

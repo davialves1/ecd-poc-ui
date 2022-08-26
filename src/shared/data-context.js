@@ -6,7 +6,8 @@ export const DataProvider = ({children}) => {
   const [metaData, setMetaData] = useState();
   const [file, setFile] = useState();
   const [progress, setProgress] = useState(1);
-  const [selectedWorksheet, setSelectedWorksheet] = useState('Worksheet 01');
+  const [selectedWorksheet, setSelectedWorksheet] = useState();
+  const [worksheets, setWorksheets] = useState();
 
   return (
       <DataContext.Provider value={{
@@ -17,7 +18,10 @@ export const DataProvider = ({children}) => {
         progress,
         setProgress,
         selectedWorksheet,
-        setSelectedWorksheet}}>
+        setSelectedWorksheet,
+        worksheets,
+        setWorksheets
+      }}>
         {children}
       </DataContext.Provider>
   )

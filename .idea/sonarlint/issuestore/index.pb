@@ -3,8 +3,6 @@
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 ;
 src/App.css,a/a/aa7165aefcf8ee3d73539e99ab007daf1aa18d8d
-B
-src/pages/login.js,6/9/69bd61b3318a5556b9b2c2cb0288673681b499f0
 <
 package.json,7/0/7030d0b2f71b999ff89a343de08c414af32fc93a
 J
@@ -15,5 +13,3 @@ src/App.js,1/e/1e43fa63aecd2127be034b3fb9d4caa172275714
 :
 
 Dockerfile,6/6/6651ddff6eb82c840ced7c1dddee15c6e1913dd4
-<
-src/index.js,f/9/f900edc44cb929c2267a16100a32851f6d5b477d
